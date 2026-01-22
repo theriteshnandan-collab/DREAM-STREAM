@@ -22,7 +22,7 @@ export default function FloatingNav() {
                     <div className="relative w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
                         <span className="font-serif font-bold text-primary text-xl">D</span>
                     </div>
-                    <span className="font-serif font-bold text-lg tracking-wide opacity-90 group-hover:opacity-100 transition-opacity">
+                    <span className="hidden md:block font-serif font-bold text-lg tracking-wide opacity-90 group-hover:opacity-100 transition-opacity">
                         DreamStream
                     </span>
                 </Link>

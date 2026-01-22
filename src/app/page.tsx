@@ -250,7 +250,7 @@ export default function Home() {
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold font-serif tracking-tight bg-gradient-to-br from-white via-white to-white/50 bg-clip-text text-transparent pb-2">
+          <h1 className="text-4xl md:text-7xl font-bold font-serif tracking-tight bg-gradient-to-br from-white via-white to-white/50 bg-clip-text text-transparent pb-2">
             Decode Your <br /> Subconscious
           </h1>
 
@@ -262,7 +262,7 @@ export default function Home() {
 
         {/* Input Card */}
         <GlassCard gradient className="p-1 rounded-2xl max-w-2xl w-full mx-auto">
-          <div className="p-6 rounded-xl space-y-4">
+          <div className="p-4 md:p-6 rounded-xl space-y-4">
             <Textarea
               placeholder="Describe your dream here..."
               className="resize-none h-40 bg-transparent border-none text-xl font-serif text-foreground placeholder:text-muted-foreground/30 focus-visible:ring-0 p-0 leading-relaxed transition-opacity"
