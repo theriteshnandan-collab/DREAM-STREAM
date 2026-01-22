@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs'
+import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Crimson_Pro } from "next/font/google";
 import "./globals.css";
@@ -73,6 +74,7 @@ export default function RootLayout({
               </div>
             </BackgroundLayout>
             <Toaster richColors position="top-center" />
+            <Analytics />
           </ThemeProvider>
         </body>
       </html>
