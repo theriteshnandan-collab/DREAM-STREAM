@@ -136,6 +136,27 @@ export default function Home() {
             </div>
 
 
+
+            {/* Guest Warning */}
+            {!user && (
+              <GlassCard className="p-4 mb-6 border-amber-500/30 bg-amber-500/5">
+                <div className="flex flex-col gap-3 text-center">
+                  <div className="flex items-center justify-center gap-2 text-amber-200/90 font-medium">
+                    <Sparkles className="w-4 h-4" />
+                    <span>Sign in to save this dream</span>
+                  </div>
+                  <p className="text-xs text-amber-200/60">
+                    Create a free account to keep a permanent journal of your dreams.
+                  </p>
+                  <SignInButton mode="modal">
+                    <Button variant="secondary" className="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-100 border border-amber-500/20">
+                      Sign In Now
+                    </Button>
+                  </SignInButton>
+                </div>
+              </GlassCard>
+            )}
+
             <div className="flex gap-4 mt-8">
               <Button
                 onClick={handleSave}

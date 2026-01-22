@@ -66,7 +66,7 @@ export default function Footer() {
 
                 {/* Bottom Bar / Made with Love */}
                 <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-muted-foreground/40">
-                    <p>© 2026 DreamStream AI. All rights served in the astral plane.</p>
+                    <p>© 2026 DreamStream AI. All rights reserved in the astral plane.</p>
                     <p className="flex items-center gap-1.5">
                         Made with <Heart className="w-3 h-3 text-red-500 fill-red-500/20 animate-pulse" /> by <span className="text-white/60">DreamStream Team</span>
                     </p>
