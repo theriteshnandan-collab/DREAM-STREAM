@@ -32,18 +32,30 @@ export default function JournalPage() {
 
     // Fetch dreams on mount
     useEffect(() => {
-        if (isLoaded && user && supabase) {
+        if (isLoaded) {
             fetchDreams();
-        } else if (isLoaded && !user) {
-            // Redirect handled by middleware, but just in case
-            window.location.href = "/";
         }
     }, [isLoaded, user]);
 
     const fetchDreams = async () => {
-        if (!supabase || !user) return;
-
         setIsLoading(true);
+
+        // GUEST MODE FETCH
+        if (!user) {
+            try {
+                const localDreams = JSON.parse(localStorage.getItem('guest_dreams') || '[]');
+                setDreams(localDreams);
+            } catch (e) {
+                console.error("Failed to load local dreams", e);
+            } finally {
+                setIsLoading(false);
+            }
+            return;
+        }
+
+        // AUTH MODE FETCH
+        if (!supabase) return;
+
         try {
             const { data, error } = await supabase
                 .from('dreams')
@@ -63,6 +75,16 @@ export default function JournalPage() {
     const handleDelete = async (dreamId: string) => {
         if (!confirm("Are you sure you want to delete this dream?")) return;
 
+        // GUEST DELETE
+        if (!user) {
+            const updated = dreams.filter(d => d.id !== dreamId);
+            setDreams(updated);
+            localStorage.setItem('guest_dreams', JSON.stringify(updated));
+            toast.success("Dream removed from temporary journal");
+            return;
+        }
+
+        // AUTH DELETE
         setDeletingId(dreamId);
         try {
             const response = await fetch(`/api/dreams/${dreamId}`, {
@@ -122,9 +144,30 @@ export default function JournalPage() {
             </div>
 
             {/* Stats Bar */}
-            <div className="max-w-7xl mx-auto mb-8">
+            <div className="max-w-7xl mx-auto mb-8 space-y-4">
+                {/* Guest Banner */}
+                {!user && (
+                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center gap-3 text-amber-200">
+                            <Sparkles className="w-5 h-5 shrink-0" />
+                            <div>
+                                <p className="font-medium">You are in Temporary Guest Mode</p>
+                                <p className="text-sm opacity-70">Dreams are saved to your browser and will be lost if you clear history. Sign in to sync them forever.</p>
+                            </div>
+                        </div>
+                        <div className="flex gap-2 w-full md:w-auto">
+                            <Link href="/">
+                                <Button size="sm" variant="outline" className="w-full md:w-auto border-amber-500/30 hover:bg-amber-500/20 text-amber-100">
+                                    Record New
+                                </Button>
+                            </Link>
+                            {/* Note: Clerk's SignInButton would go here, but keeping it simple for now */}
+                        </div>
+                    </div>
+                )}
+
                 <p className="text-sm text-muted-foreground">
-                    {dreams.length} {dreams.length === 1 ? 'dream' : 'dreams'} recorded
+                    {dreams.length} {dreams.length === 1 ? 'dream' : 'dreams'} recorded {user ? '' : '(Temporary)'}
                 </p>
             </div>
 

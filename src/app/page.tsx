@@ -49,13 +49,53 @@ export default function Home() {
   const { user } = useUser();
 
   const handleSave = async () => {
-    if (!result || !supabase) {
-      toast.error("Database not connected yet! Check .env.local");
+    if (!result) return;
+
+    // GUEST MODE SAVE
+    if (!user) {
+      setIsSaving(true);
+      try {
+        const guestDream = {
+          id: crypto.randomUUID(),
+          content: result.content,
+          theme: result.theme,
+          mood: result.mood,
+          image_url: result.imageUrl,
+          created_at: new Date().toISOString(),
+          is_guest: true, // Flag to identify guest dreams
+        };
+
+        // Get existing dreams
+        const existing = JSON.parse(localStorage.getItem('guest_dreams') || '[]');
+        const updated = [guestDream, ...existing];
+        localStorage.setItem('guest_dreams', JSON.stringify(updated));
+
+        // Confetti for guests too!
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+
+        toast.success("Saved to Temporary Journal! 📝", {
+          description: "Sign in to save your dreams permanently.",
+          duration: 5000,
+        });
+
+        setResult(null);
+        setDream("");
+      } catch (error) {
+        console.error("Guest save failed:", error);
+        toast.error("Failed to save to temporary journal");
+      } finally {
+        setIsSaving(false);
+      }
       return;
     }
 
-    if (!user) {
-      toast.error("Please sign in to save your dream!");
+    // AUTH MODE SAVE (SUPABASE)
+    if (!supabase) {
+      toast.error("Database connection missing");
       return;
     }
 
