@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import BackgroundLayout from "@/components/BackgroundLayout";
 import FloatingNav from "@/components/FloatingNav";
 import Footer from "@/components/Footer";
+import { Analytics } from '@vercel/analytics/next';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
